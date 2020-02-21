@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,6 +27,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     },
  * )
  * @ApiFilter(SearchFilter::class, properties={"owner": "exact"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "headliner", "date", "venue", "openingActs"}, arguments={"orderParameterName"="order"})
  * @ORM\Entity(repositoryClass="App\Repository\ConcertRepository")
  */
 class Concert
@@ -61,11 +63,6 @@ class Concert
      * @ORM\Column(type="array", nullable=true)
      */
     private $openingActs = [];
-
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $festival;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="conerts")
@@ -143,17 +140,6 @@ class Concert
         return $this;
     }
 
-    public function getFestival(): ?string
-    {
-        return $this->festival;
-    }
-
-    public function setFestival(?string $festival): self
-    {
-        $this->festival = $festival;
-
-        return $this;
-    }
 
     public function getOwner(): ?User
     {

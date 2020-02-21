@@ -4,7 +4,7 @@
         <p>Track and manage all the concerts you've seen!</p>
         <div id="loginForm">
             <h2>Login</h2>
-            <b-form>
+            <b-form >
                 <b-form-group label="Email" >
                     <b-form-input
                             type="email"
@@ -20,13 +20,13 @@
                     ></b-form-input>
                 </b-form-group>
 
-                <b-button type="submit" class="mb-3" variant="primary">Login</b-button>
+                <b-button  type="submit" class="mb-3 text-right" variant="primary">Login</b-button>
 
                 <b-alert fade :show="showError" variant="danger">
                     {{errors}}
                 </b-alert>
 
-                <p><router-link to="/register">Don't have an account? Register.</router-link></p>
+                <p style="text-align: center" ><router-link to="/register">Don't have an account? Register.</router-link></p>
 
             </b-form>
         </div>
@@ -63,6 +63,11 @@
 </script>
 
 <style scoped>
+    #login {
+        margin: 50px auto;
+        max-width: 500px;
+    }
+
     #loginForm {
         margin-top: 30px;
     }

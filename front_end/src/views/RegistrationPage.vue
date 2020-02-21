@@ -64,5 +64,9 @@
 </script>
 
 <style scoped>
+    #register {
+        margin: 50px auto;
+        max-width: 500px;
+    }
 
 </style>

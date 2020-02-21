@@ -2,7 +2,12 @@
     <div id="myConcerts">
         <h1>Concerts</h1>
         <b-button @click="displayModal">Add Concert</b-button>
-        <b-table :fields="fields" :items="getConcerts" show-empty striped responsive="sm">
+        <b-table id="concertTable"
+
+                 :fields="fields"
+                 :items="getConcerts"
+                 show-empty
+                 striped>
 
             <template v-slot:cell(attended)="row">
                 <b-icon-check-circle v-if="row.item.attended" variant="success" font-scale="1.5"></b-icon-check-circle>
@@ -10,12 +15,22 @@
 
             <template v-slot:cell(openingActs)="row">
                 <span v-for="item in row.item.openingActs" v-bind:key="item">
-                    <i>{{item}}</i>
+                    <span> • {{item}} </span>
                 </span>
+            </template>
+
+            <template v-slot:cell(buttonHolder)>
+                <b-button size="sm" variant="light" class="mr-3">
+                    <b-icon-pencil font-scale="1.5" variant="info"/>
+                </b-button>
+                <b-button size="sm" variant="light">
+                    <b-icon-trash font-scale="1.5" variant="danger"/>
+                </b-button>
             </template>
 
         </b-table>
         <ConcertModal :modal-id="modalID" />
+
     </div>
 </template>
 
@@ -51,10 +66,16 @@
                     },
                     {
                         key: 'attended',
-                        label: 'Attended'
+                        label: 'Attended',
+                        sortable:true
                     },
+                    {
+                        key: 'buttonHolder',
+                        label:'Edit | Delete'
+                    }
                 ],
-                modalID: "modalID"
+                modalID: "modalID",
+                items: []
             }
         },
         components: {
@@ -65,11 +86,18 @@
         },
         methods: {
             getConcerts(ctx) {
+                let params = '';
+
+                //The greasiest way to sort your table via API.
+                if (ctx.sortBy) {
+                    params = '&order['+ctx.sortBy+']='+ (ctx.sortDesc ? 'desc' : 'asc');
+                }
+                console.log(params);
+
                 return Axios.request({
                     method: "GET",
-                    url: 'http://localhost:8000/api/concerts?owner=' + this.jwtID,
+                    url: 'http://localhost:8000/api/concerts?owner=' + this.jwtID + params,
                     headers: {'Accept': 'application/json'},
-                    params: {searchFor:ctx.filter}
                 })
                 .then(response => {
                     return response.data;
@@ -82,12 +110,14 @@
                 // this.currentConcert = concert;
                 this.$bvModal.show(this.modalID);
             },
+
         }
     }
 </script>
 
 <style scoped>
     #myConcerts {
-
+        margin: 50px auto;
+        width: 80%;
     }
 </style>

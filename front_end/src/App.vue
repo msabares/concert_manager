@@ -16,7 +16,9 @@
 
           </b-collapse>
       </b-navbar>
-    <router-view id="routerView"/>
+      <div id="currentPage">
+          <router-view/>
+      </div>
   </div>
 </template>
 
@@ -35,16 +37,16 @@
   }
 </script>
 
-<style scoped>
-#app {
-  /*font-family: Avenir, Helvetica, Arial, sans-serif;*/
-  /*-webkit-font-smoothing: antialiased;*/
-  /*-moz-osx-font-smoothing: grayscale;*/
-  /*text-align: center;*/
-  /*color: #2c3e50;*/
-}
+<style>
+    #app {
+      /*font-family: Avenir, Helvetica, Arial, sans-serif;*/
+      /*-webkit-font-smoothing: antialiased;*/
+      /*-moz-osx-font-smoothing: grayscale;*/
+      /*text-align: center;*/
+      /*color: #2c3e50;*/
+
+    }
     #routerView {
-        margin: 25px auto;
-        width: 70%;
+        margin: 30px auto;
     }
 </style>
