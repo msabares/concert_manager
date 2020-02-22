@@ -15,8 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
  *     attributes={"security"="is_granted('ROLE_USER')"},
  *     itemOperations={
  *          "get",
- *          "delete",
- *          "put" = { "security"="is_granted('ROLE_USER') and object.owner == user" }
+ *          "delete" = { "security"="is_granted('ROLE_USER') and object.getOwner() == user" },
+ *          "put" = { "security"="is_granted('ROLE_USER') and object.getOwner() == user" }
  *      },
  *     collectionOperations={
  *          "get",
@@ -26,7 +26,13 @@ use Doctrine\ORM\Mapping as ORM;
  *          }
  *     },
  * )
- * @ApiFilter(SearchFilter::class, properties={"owner": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={
+ *     "owner": "exact",
+ *     "headliner" : "partial",
+ *     "date" : "partial",
+ *     "venue" : "partial",
+ *     "openingActs" : "partial"
+ * })
  * @ApiFilter(OrderFilter::class, properties={"id", "headliner", "date", "venue", "openingActs"}, arguments={"orderParameterName"="order"})
  * @ORM\Entity(repositoryClass="App\Repository\ConcertRepository")
  */

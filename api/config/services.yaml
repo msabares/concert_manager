@@ -29,7 +29,7 @@ services:
     Symfony\Component\Serializer\Normalizer\DateTimeNormalizer:
         arguments:
             $defaultContext:
-                datetime_format: 'M d Y'
+                datetime_format: 'Y-m-d'
 
     acme_api.event.jwt_created_listener:
         class: App\EventListener\JWTCreatedListener
