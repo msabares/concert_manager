@@ -23,7 +23,7 @@ composer install
 ```
 
 ## Useful Commands
-###Initialize and Manage Database
+### Initialize and Manage Database
 Create database
 ```
 php bin/console doctrine:database:create
