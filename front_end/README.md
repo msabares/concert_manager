@@ -22,13 +22,13 @@ Within the front_end directory, use the following command.
 yarn install
 ```
 
-# Useful Commands
-## Compile project during development
+## Useful Commands
+### Compile project during development
 ```
 yarn serve
 ```
 
-## Compile project for deployment
+### Compile project for deployment
 ```
 yarn build
 ```
