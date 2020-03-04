@@ -12,12 +12,14 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {alreadyAuth: true}
   },
   {
     path: '/register',
     name: 'Register',
-    component: RegistrationPage
+    component: RegistrationPage,
+    meta: {alreadyAuth: true}
   },
   {
     path: '/',
@@ -51,9 +53,13 @@ router.beforeEach((to, from, next) => {
 
   if(to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
     next('/login');
+  } else if (to.matched.some(record => record.meta.alreadyAuth) && loggedIn) {
+    next('/');
   } else {
     next();
   }
+
+
 });
 
 export default router

@@ -6,11 +6,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Axios from "axios";
-import './registerServiceWorker'
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 import Vuelidate from 'vuelidate'
 
-Vue.use(Vuelidate)
+Vue.use(Vuelidate);
 Vue.use(BootstrapVue);
 Vue.use(BootstrapVueIcons);
 
@@ -35,10 +34,10 @@ new Vue({
     Axios.interceptors.response.use(
         response => response,
         error => {
-          if (error.response.status === 401) {
+          if (error.response.status === 401 && localStorage.getItem('user') !== null) {
               // Used for when someone adds a token to their header (like any token)
               // because it reloads, you won't be able to see invalid credentials errors.
-            this.$store.dispatch('logout')
+              this.$store.dispatch('logout')
           }
           return Promise.reject(error);
         }

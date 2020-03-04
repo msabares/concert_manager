@@ -2,8 +2,8 @@
     <div id="myConcerts">
         <div id="header">
                 <h1>Concerts</h1>
-                <b-form-select class="w-50 mr-1" v-model="searchByField" :options="selectFields"/>
-                <b-input  debounce="500" v-model="searchString" type="search" placeholder="Search concert"/>
+                <b-form-select class="w-25 mr-1 ml-2" v-model="searchByField" :options="selectFields"/>
+                <b-input debounce="500" v-model="searchString" type="search" placeholder="Search concert"/>
                 <b-button class="ml-2" variant="primary" size="sm" @click="displayModal(undefined)">
                     <b-icon-plus font-scale="1.8"/>
                 </b-button>
@@ -172,10 +172,5 @@
         display: flex;
         align-items: center;
     }
-
-    #header > h1 {
-        margin-right: 4em;
-    }
-
 
 </style>
