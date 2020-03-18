@@ -1,43 +1,35 @@
-import '@babel/polyfill'
-import 'mutationobserver-shim'
 import Vue from 'vue'
-import './plugins/bootstrap-vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Axios from "axios";
-import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
-import Vuelidate from 'vuelidate'
+import './plugins/element.js'
+import axios from 'axios'
+import VueAxios from "vue-axios";
 
-Vue.use(Vuelidate);
-Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons);
+Vue.use(VueAxios, axios);
 
 Vue.config.productionTip = false;
-Vue.prototype.$http = Axios;
 
-const token = localStorage.getItem('token');
-if (token) {
-  Vue.prototype.$http.defaults.headers.common['Authorization'] = token
-}
 
 new Vue({
   router,
   store,
   created() {
-    const userString = localStorage.getItem('user');
-    if (userString) {
+    //When the browser is refreshed, the vue data won't make it over.
+    //This will allow us to take the data in localStorage and 're-save' it into our vue data if
+    //there's is data in localStorage.
+    const userString  = localStorage.getItem('user');
+    if(userString) {
       const userData = JSON.parse(userString);
       this.$store.commit('SET_USER_DATA', userData);
     }
 
-    Axios.interceptors.response.use(
+    Vue.axios.interceptors.response.use(
         response => response,
         error => {
-          if (error.response.status === 401 && localStorage.getItem('user') !== null) {
-              // Used for when someone adds a token to their header (like any token)
-              // because it reloads, you won't be able to see invalid credentials errors.
-              this.$store.dispatch('logout')
+          if(error.response.status === 401 && localStorage.getItem('user') !== null) {
+              //If a user uses an invalid token into their header, we'll log them out.
+            this.$store.dispatch('logout');
           }
           return Promise.reject(error);
         }

@@ -1,52 +1,47 @@
 <template>
   <div id="app">
-      <b-navbar toggleable="sm" v-if="loggedIn" type="light" variant="light">
-          <b-navbar-brand>Concert Manager</b-navbar-brand>
 
-          <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+    <!--Nav Bar-->
+    <el-menu v-if="loggedIn" default-active="1" mode="horizontal" background-color="#2E4057" text-color="white" active-text-color="#F4D35E">
+      <el-menu-item>Home</el-menu-item>
+      <el-menu-item @click="logout">Logout</el-menu-item>
+    </el-menu>
 
-          <b-collapse id="nav-collapse" is-nav>
+    <!--Displays the current vue component-->
+    <div id="currentPage">
+      <router-view/>
+    </div>
 
-              <b-navbar-nav class="ml-auto">
-                  <b-nav-item to="/">Dashboard</b-nav-item>
-                  <b-nav-item to="/myConcerts">My Concerts</b-nav-item>
-                  <b-nav-item to="/aboutMe">About Me</b-nav-item>
-                  <b-nav-item @click="logout">Logout</b-nav-item>
-              </b-navbar-nav>
-
-          </b-collapse>
-      </b-navbar>
-      <div id="currentPage">
-          <router-view/>
-      </div>
   </div>
 </template>
 
 <script>
   import {authComputed} from "./store/helpers";
 
-  export default {
-    computed: {
-      ...authComputed
-    },
-    methods: {
-      logout() {
-        this.$store.dispatch('logout');
-      }
+export default {
+  name: 'app',
+  components: {
+
+  },
+  computed: {
+    ...authComputed
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout');
     }
+
   }
+}
 </script>
 
 <style>
-    #app {
-      /*font-family: Avenir, Helvetica, Arial, sans-serif;*/
-      /*-webkit-font-smoothing: antialiased;*/
-      /*-moz-osx-font-smoothing: grayscale;*/
-      /*text-align: center;*/
-      /*color: #2c3e50;*/
-
-    }
-    #routerView {
-        margin: 30px auto;
-    }
+#app {
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /*text-align: center;*/
+  /*color: #2c3e50;*/
+  /*margin-top: 60px;*/
+}
 </style>

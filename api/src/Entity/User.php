@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -29,6 +30,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ApiFilter(SearchFilter::class, properties={"email": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(
+ *      fields={"email"},
+ *      message="Email Address is already taken"
+ * )
  */
 class User implements UserInterface
 {
@@ -69,18 +74,20 @@ class User implements UserInterface
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $favColor;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Concert", mappedBy="owner", orphanRemoval=true)
      */
     private $conerts;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Venue", mappedBy="owner", orphanRemoval=true)
+     */
+    private $venueList;
+
+
     public function __construct()
     {
         $this->conerts = new ArrayCollection();
+        $this->venueList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -184,18 +191,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFavColor(): ?string
-    {
-        return $this->favColor;
-    }
-
-    public function setFavColor(?string $favColor): self
-    {
-        $this->favColor = $favColor;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Concert[]
      */
@@ -221,6 +216,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($conert->getOwner() === $this) {
                 $conert->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Venue[]
+     */
+    public function getVenueList(): Collection
+    {
+        return $this->venueList;
+    }
+
+    public function addVenueList(Venue $venueList): self
+    {
+        if (!$this->venueList->contains($venueList)) {
+            $this->venueList[] = $venueList;
+            $venueList->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenueList(Venue $venueList): self
+    {
+        if ($this->venueList->contains($venueList)) {
+            $this->venueList->removeElement($venueList);
+            // set the owning side to null (unless already changed)
+            if ($venueList->getOwner() === $this) {
+                $venueList->setOwner(null);
             }
         }
 

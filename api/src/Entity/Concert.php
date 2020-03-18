@@ -61,11 +61,6 @@ class Concert
     private $attended;
 
     /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $venue;
-
-    /**
      * @ORM\Column(type="array", nullable=true)
      */
     private $openingActs = [];
@@ -76,9 +71,15 @@ class Concert
      */
     private $owner;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Venue", mappedBy="concertList")
+     */
+    private $venue;
+
     public function __construct()
     {
         $this->owner = new ArrayCollection();
+        $this->venue = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,17 +123,6 @@ class Concert
         return $this;
     }
 
-    public function getVenue(): ?string
-    {
-        return $this->venue;
-    }
-
-    public function setVenue(string $venue): self
-    {
-        $this->venue = $venue;
-
-        return $this;
-    }
 
     public function getOpeningActs(): ?array
     {
@@ -155,6 +145,37 @@ class Concert
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Venue[]
+     */
+    public function getVenue(): Collection
+    {
+        return $this->venue;
+    }
+
+    public function addVenue(Venue $venue): self
+    {
+        if (!$this->venue->contains($venue)) {
+            $this->venue[] = $venue;
+            $venue->setConcertList($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenue(Venue $venue): self
+    {
+        if ($this->venue->contains($venue)) {
+            $this->venue->removeElement($venue);
+            // set the owning side to null (unless already changed)
+            if ($venue->getConcertList() === $this) {
+                $venue->setConcertList(null);
+            }
+        }
 
         return $this;
     }

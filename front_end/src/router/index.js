@@ -1,10 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from "../views/LoginPage"
-import DashboardPage from "../views/DashboardPage"
-import RegistrationPage from "../views/RegistrationPage"
-import AboutMePage from "../views/AboutMePage"
-import MyConcertsPage from "../views/MyConcertsPage"
+import Login from '../views/Login.vue'
+import Home from '../views/Home.vue'
+import Register from "../views/Register";
 
 Vue.use(VueRouter);
 
@@ -18,25 +16,13 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: RegistrationPage,
+    component: Register,
     meta: {alreadyAuth: true}
   },
   {
     path: '/',
-    name: 'Dashboard',
-    component: DashboardPage,
-    meta: {requiresAuth: true}
-  },
-  {
-    path: '/aboutMe',
-    name: 'About Me',
-    component: AboutMePage,
-    meta: {requiresAuth: true}
-  },
-  {
-    path: '/myConcerts',
-    name: 'My Concerts',
-    component: MyConcertsPage,
+    name: 'Home',
+    component: Home,
     meta: {requiresAuth: true}
   }
 
@@ -48,18 +34,20 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach( (to, from, next) => {
   const loggedIn = localStorage.getItem('user');
 
-  if(to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+  if(to.matched.some(record => record.meta.requiresAuth) && !loggedIn ) {
+    //When a user goes to a page that requires authorization but they haven't logged in, they're
+    //rerouted to /login page.
     next('/login');
   } else if (to.matched.some(record => record.meta.alreadyAuth) && loggedIn) {
-    next('/');
+    //When a user goes to pages a registration or login page, but they're already logged in,
+    //they'll be rerouted to their home page.
+    next('/')
   } else {
-    next();
+    next(); //continue to their desired page.
   }
-
-
 });
 
 export default router
