@@ -12,16 +12,16 @@
       <el-card shadow="hover" id="loginCard">
         <h1>Login</h1>
 
-        <el-form :model="loginForm" :rules="rules" ref="loginForm" status-icon>
+        <el-form :model="loginForm" :rules="rules" ref="loginForm">
 
           <!--Email Input-->
           <el-form-item label="Email" prop="email">
-            <el-input type="email" v-model="loginForm.email"/>
+            <el-input type="email" v-model="loginForm.email" prefix-icon="el-icon-message" clearable/>
           </el-form-item>
 
           <!--Password Input-->
           <el-form-item label="Password" prop="password">
-            <el-input type="password" v-model="loginForm.password"/>
+            <el-input type="password" v-model="loginForm.password" prefix-icon="el-icon-more" clearable/>
           </el-form-item>
 
           <!--Login Button-->

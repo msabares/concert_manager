@@ -114,7 +114,12 @@
                     email: this.registerForm.email.toLocaleLowerCase(),
                     password: this.registerForm.password
                 }).then(()=> {
-
+                    this.$message({
+                        message: this.registerForm.email + ' has been created',
+                        duration: 2000,
+                        type: 'success'
+                    });
+                    this.$router.push({ name: 'Login' })
                 }).catch((error) => {
                     //Hard coded an expect error for unique email violations.
                     //All other errors should be caught in the UI end.
